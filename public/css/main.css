@@ -1,0 +1,177 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: #f7f7f7;
+}
+
+/* NAVBAR */
+.navbar {
+    background-color: #073B5E;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-container {
+    max-width: 1300px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.logo {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.nav-menu {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-menu li a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* HERO */
+.hero {
+    background-color: #CBE3FF;
+    padding: 80px 0;
+}
+
+.hero-content {
+    width: 90%;
+    max-width: 1300px;
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.hero-image {
+    width: 100%;
+    max-width: 450px;
+}
+
+/* SECTION */
+.section {
+    padding: 80px 20px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 32px;
+    margin-bottom: 50px;
+    color: #073B5E;
+}
+
+/* VISI MISI */
+.visi-misi-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: white;
+    padding: 30px;
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px #00000015;
+    text-align: left;
+}
+
+/* MICROservices */
+.service-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.service-card {
+    background: transparent;
+    box-shadow: none;
+    width: 400px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+/* SYARAT */
+.requirements {
+    background: #f8f9fa;
+    padding: 4rem 20px;
+}
+
+.req-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.req-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.req-card h4 {
+    color: #1e3a5f;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.req-card ol {
+    padding-left: 1.2rem;
+    font-size: 0.85rem;
+}
+
+.req-card li {
+    margin-bottom: 0.5rem;
+}
+
+.section-title {
+    text-align: center;
+    color: #1e3a5f;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+}
+
+
+
+/* FOOTER */
+.footer {
+    background: #000000;
+    /* dari hijau tua */
+    padding: 22px 50px;
+    color: white;
+    font-size: 13px;
+    box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.footer-flex {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
