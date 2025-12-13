@@ -61,22 +61,22 @@ class HealthygateController extends Controller
         // Validasi dokumen klinik
         $request->validate([
             // Dokumen wajib umum
-            'surat_permohonan' => 'required|mimes:pdf|max:2048',
-            'ktp_pemilik'      => 'required|mimes:pdf|max:2048',
-            'npwp_pemilik'     => 'required|mimes:pdf|max:2048',
-            'nib'              => 'required|mimes:pdf|max:2048',
+            'surat_permohonan' => 'required|mimes:pdf|max:5000',
+            'ktp_pemilik'      => 'required|mimes:pdf|max:5000',
+            'npwp_pemilik'     => 'required|mimes:pdf|max:5000',
+            'nib'              => 'required|mimes:pdf|max:5000',
             
             // Dokumen spesifik klinik
-            'bpjs_pemilik'                  => 'required|mimes:pdf|max:2048',
-            'daftar_obat'                   => 'required|mimes:pdf|max:2048',
-            'surat_izin_tenaga_kesehatan'   => 'required|mimes:pdf|max:2048',
-            'perjanjian_limbah_b3'          => 'required|mimes:pdf|max:2048',
-            'deskripsi_pengorganisasian'    => 'required|mimes:pdf|max:2048',
-            'lokasi_bangunan'               => 'required|mimes:pdf|max:2048',
-            'prasarana_ketenagaan'          => 'required|mimes:pdf|max:2048',
-            'peralatan_kesehatan'           => 'required|mimes:pdf|max:2048',
-            'kefarmasian'                   => 'required|mimes:pdf|max:2048',
-            'laboratorium'                  => 'required|mimes:pdf|max:2048',
+            'bpjs_pemilik'                  => 'required|mimes:pdf|max:5000',
+            'daftar_obat'                   => 'required|mimes:pdf|max:5000',
+            'surat_izin_tenaga_kesehatan'   => 'required|mimes:pdf|max:5000',
+            'perjanjian_limbah_b3'          => 'required|mimes:pdf|max:5000',
+            'deskripsi_pengorganisasian'    => 'required|mimes:pdf|max:5000',
+            'lokasi_bangunan'               => 'required|mimes:pdf|max:5000',
+            'prasarana_ketenagaan'          => 'required|mimes:pdf|max:5000',
+            'peralatan_kesehatan'           => 'required|mimes:pdf|max:5000',
+            'kefarmasian'                   => 'required|mimes:pdf|max:5000',
+            'laboratorium'                  => 'required|mimes:pdf|max:5000',
         ]);
         
         try {
@@ -114,24 +114,24 @@ class HealthygateController extends Controller
     public function handleApotik(Request $request, array $izinData)
     {
         $request->validate([
-            'surat_permohonan' => 'required|mimes:pdf|max:2048',
-            'ktp_pemilik'      => 'required|mimes:pdf|max:2048',
-            'npwp_pemilik'     => 'required|mimes:pdf|max:2048',
-            'nib'              => 'required|mimes:pdf|max:2048',
+            'surat_permohonan' => 'required|mimes:pdf|max:5000',
+            'ktp_pemilik'      => 'required|mimes:pdf|max:5000',
+            'npwp_pemilik'     => 'required|mimes:pdf|max:5000',
+            'nib'              => 'required|mimes:pdf|max:5000',
             
-            'sip_apt_jawab'           => 'required|mimes:pdf|max:2048',
-            'denah_lokasi'            => 'required|mimes:pdf|max:2048',
-            'denah_ruangan'           => 'required|mimes:pdf|max:2048',
-            'sip_asisten_apoteker'    => 'required|mimes:pdf|max:2048',
-            'daftar_peralatan_apotik' => 'required|mimes:pdf|max:2048',
-            'rekom_puskesmas'         => 'required|mimes:pdf|max:2048',
-            'imb_pbg'                 => 'required|mimes:pdf|max:2048',
-            'pbb_tahun'               => 'required|mimes:pdf|max:2048',
-            'sppl'                    => 'required|mimes:pdf|max:2048',
-            'bpjs_apoteker'           => 'required|mimes:pdf|max:2048',
-            'bpjs_asisten'            => 'required|mimes:pdf|max:2048',
-            'bpjs_kesehatan_asisten'  => 'required|mimes:pdf|max:2048',
-            'pas_foto'                => 'required|mimes:pdf|max:2048',
+            'sip_apt_jawab'           => 'required|mimes:pdf|max:5000',
+            'denah_lokasi'            => 'required|mimes:pdf|max:5000',
+            'denah_ruangan'           => 'required|mimes:pdf|max:5000',
+            'sip_asisten_apoteker'    => 'required|mimes:pdf|max:5000',
+            'daftar_peralatan_apotik' => 'required|mimes:pdf|max:5000',
+            'rekom_puskesmas'         => 'required|mimes:pdf|max:5000',
+            'imb_pbg'                 => 'required|mimes:pdf|max:5000',
+            'pbb_tahun'               => 'required|mimes:pdf|max:5000',
+            'sppl'                    => 'required|mimes:pdf|max:5000',
+            'bpjs_apoteker'           => 'required|mimes:pdf|max:5000',
+            'bpjs_asisten'            => 'required|mimes:pdf|max:5000',
+            'bpjs_kesehatan_asisten'  => 'required|mimes:pdf|max:5000',
+            'pas_foto'                => 'required|mimes:pdf|max:5000',
         ]);
 
         try {
@@ -191,7 +191,7 @@ class HealthygateController extends Controller
         $validated = $request->validate([
             'jenis_usaha' => 'required|in:apotik,klinik',
             'jenis_izin' => 'required|in:Perpanjangan',
-            'izin_usaha_terbit' => 'required|file|mimes:pdf|max:2048',
+            'izin_usaha_terbit' => 'required|file|mimes:pdf|max:5000',
         ]);
 
         DB::beginTransaction();

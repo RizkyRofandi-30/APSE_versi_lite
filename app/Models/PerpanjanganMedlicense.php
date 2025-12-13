@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\IzinMedlicense;   
 
 class PerpanjanganMedlicense extends Model
 {
@@ -19,4 +20,11 @@ class PerpanjanganMedlicense extends Model
     public function perpanjanganMedlicense() {
         return $this->belongsTo(IzinMedlicense::class, 'id_medlicense');
     }
+
+    public function izinMedlicense()
+    {
+        return $this->belongsTo(IzinMedlicense::class, 'id_medlicense');
+    }
+
+    
 }

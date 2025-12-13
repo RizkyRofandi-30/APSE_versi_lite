@@ -17,6 +17,7 @@ class IzinMedlicense extends Model
         'tanggal_pengajuan',
         'status',
         'surat_izin_profesi',
+        'keterangan'
     ];
 
     public function user()

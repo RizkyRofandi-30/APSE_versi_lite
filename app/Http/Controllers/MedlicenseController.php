@@ -64,21 +64,21 @@ class MedlicenseController extends Controller
     {
         $request->validate([
             // Dokumen wajib umum
-            'surat_permohonan'            => 'required|mimes:pdf|max:2048',
-            'ktp'                         => 'required|mimes:pdf|max:2048',
-            'str'                         => 'required|mimes:pdf|max:2048',
-            'ijazah'                      => 'required|mimes:pdf|max:2048',
-            'surat_sehat'                 => 'required|mimes:pdf|max:2048',
-            'pas_foto'                    => 'required|mimes:pdf|max:2048',
-            'npwp'                        => 'required|mimes:pdf|max:2048',
-            'bpjs_ketenagakerjaan'        => 'required|mimes:pdf|max:2048',
-            'bpjs_kesehatan'              => 'required|mimes:pdf|max:2048',
+            'surat_permohonan'            => 'required|mimes:pdf|max:5000',
+            'ktp'                         => 'required|mimes:pdf|max:5000',
+            'str'                         => 'required|mimes:pdf|max:5000',
+            'ijazah'                      => 'required|mimes:pdf|max:5000',
+            'surat_sehat'                 => 'required|mimes:pdf|max:5000',
+            'pas_foto'                    => 'required|mimes:pdf|max:5000',
+            'npwp'                        => 'required|mimes:pdf|max:5000',
+            'bpjs_ketenagakerjaan'        => 'required|mimes:pdf|max:5000',
+            'bpjs_kesehatan'              => 'required|mimes:pdf|max:5000',
             
             // Dokumen spesifik dokter
-            'sip_dokter'                  => 'required|mimes:pdf|max:2048',
-            'rekomendasi_idi'             => 'required|mimes:pdf|max:2048',
-            'foto_tempat_praktik'         => 'required|mimes:pdf|max:2048',
-            'rekomendasi_puskesmas'       => 'required|mimes:pdf|max:2048',
+            'sip_dokter'                  => 'required|mimes:pdf|max:5000',
+            'rekomendasi_idi'             => 'required|mimes:pdf|max:5000',
+            'foto_tempat_praktik'         => 'required|mimes:pdf|max:5000',
+            'rekomendasi_puskesmas'       => 'required|mimes:pdf|max:5000',
         ]);
         
         try {
@@ -109,18 +109,18 @@ class MedlicenseController extends Controller
 
     public function handlePerawat(Request $request, array $izinData) {
         $request->validate([
-            'surat_permohonan'      => 'required|file|mimes:pdf|max:2048',
-            'ktp'                   => 'required|file|mimes:pdf|max:2048',
-            'str'                   => 'required|file|mimes:pdf|max:2048',
-            'ijazah'                => 'required|file|mimes:pdf|max:2048',
-            'surat_sehat'           => 'required|file|mimes:pdf|max:2048',
-            'pas_foto'              => 'required|file|mimes:pdf|max:2048',
-            'npwp'                  => 'required|file|mimes:pdf|max:2048',
-            'bpjs_ketenagakerjaan'  => 'required|file|mimes:pdf|max:2048',
-            'bpjs_kesehatan'        => 'required|file|mimes:pdf|max:2048',
-            'rekomendasi_ppni'      => 'required|file|mimes:pdf|max:2048',
-            'rekomendasi_puskesmas' => 'required|file|mimes:pdf|max:2048',
-            'foto_tempat_praktik'   => 'required|file|mimes:pdf|max:2048',
+            'surat_permohonan'      => 'required|file|mimes:pdf|max:5000',
+            'ktp'                   => 'required|file|mimes:pdf|max:5000',
+            'str'                   => 'required|file|mimes:pdf|max:5000',
+            'ijazah'                => 'required|file|mimes:pdf|max:5000',
+            'surat_sehat'           => 'required|file|mimes:pdf|max:5000',
+            'pas_foto'              => 'required|file|mimes:pdf|max:5000',
+            'npwp'                  => 'required|file|mimes:pdf|max:5000',
+            'bpjs_ketenagakerjaan'  => 'required|file|mimes:pdf|max:5000',
+            'bpjs_kesehatan'        => 'required|file|mimes:pdf|max:5000',
+            'rekomendasi_ppni'      => 'required|file|mimes:pdf|max:5000',
+            'rekomendasi_puskesmas' => 'required|file|mimes:pdf|max:5000',
+            'foto_tempat_praktik'   => 'required|file|mimes:pdf|max:5000',
         ]);
         try {
             // SIMPAN TABEL IZIN MEDLICENSE
@@ -149,18 +149,18 @@ class MedlicenseController extends Controller
     }
     public function handleBidan(Request $request, array $izinData) {
         $request->validate([
-            'surat_permohonan'      => 'required|file|mimes:pdf|max:2048',
-            'ktp'                   => 'required|file|mimes:pdf|max:2048',
-            'str'                   => 'required|file|mimes:pdf|max:2048',
-            'ijazah'                => 'required|file|mimes:pdf|max:2048',
-            'surat_sehat'           => 'required|file|mimes:pdf|max:2048',
-            'pas_foto'              => 'required|file|mimes:pdf|max:2048',
-            'npwp'                  => 'required|file|mimes:pdf|max:2048',
-            'bpjs_ketenagakerjaan'  => 'required|file|mimes:pdf|max:2048',
-            'bpjs_kesehatan'        => 'required|file|mimes:pdf|max:2048',
-            'rekomendasi_ibi'       => 'required|file|mimes:pdf|max:2048',
-            'rekomendasi_puskesmas' => 'required|file|mimes:pdf|max:2048',
-            'foto_tempat_praktik'   => 'required|file|mimes:pdf|max:2048',
+            'surat_permohonan'      => 'required|file|mimes:pdf|max:5000',
+            'ktp'                   => 'required|file|mimes:pdf|max:5000',
+            'str'                   => 'required|file|mimes:pdf|max:5000',
+            'ijazah'                => 'required|file|mimes:pdf|max:5000',
+            'surat_sehat'           => 'required|file|mimes:pdf|max:5000',
+            'pas_foto'              => 'required|file|mimes:pdf|max:5000',
+            'npwp'                  => 'required|file|mimes:pdf|max:5000',
+            'bpjs_ketenagakerjaan'  => 'required|file|mimes:pdf|max:5000',
+            'bpjs_kesehatan'        => 'required|file|mimes:pdf|max:5000',
+            'rekomendasi_ibi'       => 'required|file|mimes:pdf|max:5000',
+            'rekomendasi_puskesmas' => 'required|file|mimes:pdf|max:5000',
+            'foto_tempat_praktik'   => 'required|file|mimes:pdf|max:5000',
         ]);
 
         try {
@@ -190,17 +190,17 @@ class MedlicenseController extends Controller
     }
     public function handleApoteker(Request $request, array $izinData) {
         $request->validate([
-            'surat_permohonan'      => 'required|file|mimes:pdf|max:2048',
-            'ktp'                   => 'required|file|mimes:pdf|max:2048',
-            'str'                   => 'required|file|mimes:pdf|max:2048',
-            'ijazah'                => 'required|file|mimes:pdf|max:2048',
-            'surat_sehat'           => 'required|file|mimes:pdf|max:2048',
-            'pas_foto'              => 'required|file|mimes:pdf|max:2048',
-            'npwp'                  => 'required|file|mimes:pdf|max:2048',
-            'bpjs_ketenagakerjaan'  => 'required|file|mimes:pdf|max:2048',
-            'bpjs_kesehatan'        => 'required|file|mimes:pdf|max:2048',
-            'rekomendasi_iai'       => 'required|file|mimes:pdf|max:2048',
-            'surat_tempat_kerja'    => 'required|file|mimes:pdf|max:2048',
+            'surat_permohonan'      => 'required|file|mimes:pdf|max:5000',
+            'ktp'                   => 'required|file|mimes:pdf|max:5000',
+            'str'                   => 'required|file|mimes:pdf|max:5000',
+            'ijazah'                => 'required|file|mimes:pdf|max:5000',
+            'surat_sehat'           => 'required|file|mimes:pdf|max:5000',
+            'pas_foto'              => 'required|file|mimes:pdf|max:5000',
+            'npwp'                  => 'required|file|mimes:pdf|max:5000',
+            'bpjs_ketenagakerjaan'  => 'required|file|mimes:pdf|max:5000',
+            'bpjs_kesehatan'        => 'required|file|mimes:pdf|max:5000',
+            'rekomendasi_iai'       => 'required|file|mimes:pdf|max:5000',
+            'surat_tempat_kerja'    => 'required|file|mimes:pdf|max:5000',
         ]);
 
         try {
@@ -252,7 +252,7 @@ class MedlicenseController extends Controller
         $validated = $request->validate([
             'jenis_profesi' => 'required|in:dokter,perawat,bidan,apoteker',
             'jenis_izin' => 'required|in:Perpanjangan',
-            'izin_profesi_terbit' => 'required|file|mimes:pdf|max:2048',
+            'izin_profesi_terbit' => 'required|file|mimes:pdf|max:5000',
         ]);
 
         DB::beginTransaction();
@@ -337,4 +337,14 @@ class MedlicenseController extends Controller
     {
         //
     }
+
+    public function kirimKeDinkes(Request $r)
+{
+    $izin = IzinMedlicense::findOrFail($r->id);
+    $izin->status_proses = 'dinkes';
+    $izin->save();
+
+    return back()->with('success', 'Berkas berhasil dikirim ke Dinkes.');
+}
+
 }

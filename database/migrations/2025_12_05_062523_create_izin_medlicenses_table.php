@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('tanggal_pengajuan');
             $table->enum('status', ['Diproses', 'Diterima', 'Ditolak'])->default('Diproses');
             $table->string('surat_izin_profesi')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

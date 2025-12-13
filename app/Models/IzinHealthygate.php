@@ -15,7 +15,8 @@ class IzinHealthygate extends Model
         'jenis_usaha',
         'tanggal_pengajuan',
         'status',
-        'surat_izin_usaha'
+        'surat_izin_usaha',
+        'keterangan'
     ];
 
     public function user()

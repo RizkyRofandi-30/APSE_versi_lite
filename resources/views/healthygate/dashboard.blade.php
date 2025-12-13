@@ -425,6 +425,7 @@
                         <th>Tanggal</th>
                         <th>Nama</th>
                         <th>Status</th>
+                        <th>Keterangan</th>
                         <th>File</th>
                     </tr>
                 </thead>
@@ -440,19 +441,14 @@
                                     {{ ucfirst($item->status) }}
                                 </td>
                                 <td>
-                                    @php
-                                        // hanya Diproses dan Ditolak yang inactive
-                                        $isInactive = in_array($item->status, ['Diproses', 'Ditolak']);
-
-                                        $btnClass = 'btn-file' . ($isInactive ? ' btn-inactive' : '');
-
-                                        // Jika aktif, arahkan ke file sebenarnya
-                                        $href = $isInactive
-                                            ? 'javascript:void(0)'
-                                            : 'javascript:void(0)'; //tempat tujuan 
-                                    @endphp
-
-                                    <a href="{{ $href }}" class="{{ $btnClass }}">
+                                    {{ $item->keterangan ?? '-' }}
+                                </td>
+                                <td>
+                                    <a href="{{ in_array($item->status, ['Diproses', 'Ditolak'])
+                                        ? 'javascript:void(0)'
+                                        : asset('storage/' . $item->surat_izin_usaha) }}"
+                                        target="{{ in_array($item->status, ['Diproses', 'Ditolak']) ? '_self' : '_blank' }}" rel="noopener noreferrer"
+                                        class="btn-file {{ in_array($item->status, ['Diproses', 'Ditolak']) ? 'btn-inactive' : '' }}">
                                         Surat izin layanan
                                     </a>
                                 </td>
@@ -460,7 +456,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="6">Belum ada data</td>
+                            <td colspan="7">Belum ada data</td>
                         </tr>
                     @endif
                 </tbody>

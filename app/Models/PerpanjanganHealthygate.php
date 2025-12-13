@@ -16,8 +16,9 @@ class PerpanjanganHealthygate extends Model
         'izin_usaha_terbit'
     ];
 
-    public function perpanjanganHealthygate() {
-        return $this->belongsTo(IzinHealthygate::class, 'id_helathygate');
+    public function izinHealthygate() {
+        return $this->belongsTo(IzinHealthygate::class, 'id_healthygate');
     }
+
 
 }

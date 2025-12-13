@@ -36,40 +36,40 @@
 
         <!-- SIDEBAR -->
         <div class="w-64 shadow-lg text-white flex flex-col" style="background-color:#1E3557;">
-        
+
             <!-- Logo -->
             <div class="p-4 border-b border-white/30 flex justify-center">
                 <img src="{{ asset('images/logo_ptsp.png') }}" alt="Logo" class="w-40">
             </div>
-        
+
             <!-- NAV MENU -->
             <nav class="mt-6 space-y-1 flex-1">
-        
-                <a href="#" class="flex items-center px-4 py-3 hover:bg-white/20 transition text-white">
+
+                <a href="{{ route('admin-ptspMedlicense') }}" class="flex items-center px-4 py-3 hover:bg-white/20 transition text-white">
                     <i class="fas fa-chart-bar mr-3"></i> Medical License
                 </a>
-        
-                <a href="#" class="flex items-center px-4 py-3 bg-white text-blue-900 font-semibold">
+
+                <a href="{{ route('admin-ptsphealthygate') }}" class="flex items-center px-4 py-3 bg-white text-blue-900 font-semibold">
                     <i class="fas fa-home mr-3"></i> Healthygate
                 </a>
-        
+
             </nav>
-        
+
             <!-- LOGOUT BUTTON -->
             <div class="p-4 border-t border-white/20">
-        
+
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
-        
+
                     <button type="submit"
                         class="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-red-600 text-white hover:bg-red-700 transition font-semibold">
                         <i class="fas fa-sign-out-alt text-white text-lg"></i>
                         Logout
                     </button>
                 </form>
-        
+
             </div>
-        
+
         </div>
 
         <!-- MAIN CONTENT -->
@@ -97,12 +97,12 @@
 
             <!-- CONTENT -->
             <div class="p-8">
-
+                <!-- PERPANJANGAN -->
                 <h2 class="text-2xl font-bold text-gray-800 mb-1 text-center">Perpanjangan Izin</h2>
-                <p class="text-gray-600 mb-6 text-center">Semua pengajuan permohonan dapat dipantau dan dikelola melalui
-                    halaman ini.</p>
+                <p class="text-gray-600 mb-6 text-center">Semua pengajuan perpanjangan dapat dipantau dan dikelola
+                    melalui halaman ini.
+                </p>
 
-                <!-- TABEL PERPANJANGAN -->
                 <div class="overflow-x-auto bg-white shadow rounded-lg border mb-12">
                     <table class="min-w-full text-sm text-center">
                         <thead class="bg-gray-100 font-semibold text-gray-700">
@@ -112,67 +112,62 @@
                                 <th class="px-4 py-3 border">Jenis Izin</th>
                                 <th class="px-4 py-3 border">Tanggal Pengajuan</th>
                                 <th class="px-4 py-3 border">Proses Berkas</th>
-                                <th class="px-4 py-3 border text-center">File</th>
                                 <th class="px-4 py-3 border text-center">Status</th>
+                                <th class="px-4 py-3 border">Proses Pengajuan</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 border">1</td>
-                                <td class="px-4 py-3 border">Dimas Satyo</td>
-                                <td class="px-4 py-3 border">Medical License</td>
-                                <td class="px-4 py-3 border">12 Jan 2025</td>
-                                <td class="px-4 py-3 border text-blue-600 font-semibold">
-                                    <!-- Klik Berkas Bakal Muncul Form -->
-                                    <button onclick="openFormPerizinan()"
-                                        class="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700">Berkas</button>
-                                </td>
-                                <td class="px-4 py-3 border text-center">
-                                    <button
-                                        class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">Perizinan</button>
-                                </td>
-                                <td class="px-4 py-3 border">Sedang Diproses</td>
-                            </tr>
+                            @if (isset($perpanjangan) && $perpanjangan->count())
+                                @foreach ($perpanjangan as $p)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 border">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-3 border">{{ $p->nama }}</td>
+                                        <td class="px-4 py-3 border">{{ $p->jenis_izin ?? 'Perpanjangan' }}</td>
+                                        <td class="px-4 py-3 border">
+                                            {{ isset($p->created_at) ? \Carbon\Carbon::parse($p->created_at)->format('d M Y') : '-' }}
+                                        </td>
 
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 border">2</td>
-                                <td class="px-4 py-3 border">Alya Putri</td>
-                                <td class="px-4 py-3 border">Medical License</td>
-                                <td class="px-4 py-3 border">14 Jan 2025</td>
-                                <td class="px-4 py-3 border text-green-600 font-semibold">
-                                    <button onclick="openFormPerizinan()"
-                                        class="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700">Berkas</button>
-                                </td>
-                                <td class="px-4 py-3 border text-center">
-                                    <button
-                                        class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">Perizinan</button>
-                                </td>
-                                <td class="px-4 py-3 border">Sedang Diproses</td>
-                            </tr>
+                                        {{-- Proses Berkas: buka modal + set selectedID --}}
+                                        <td class="px-4 py-3 border text-blue-600 font-semibold">
+                                            <button data-id="{{ $p->id }}" data-jenis="{{ $p->jenis_izin ?? 'Perpanjangan' }}" data-status_proses="{{ $p->status_proses }}"
+                                                onclick="openFormPerizinan(this.dataset.id, this.dataset.jenis, this.dataset.status_proses)"
+                                                class="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700">
+                                                Berkas
+                                            </button>
+                                        </td>
 
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 border">3</td>
-                                <td class="px-4 py-3 border">Alya Putri</td>
-                                <td class="px-4 py-3 border">Medical License</td>
-                                <td class="px-4 py-3 border">14 Jan 2025</td>
-                                <td class="px-4 py-3 border text-green-600 font-semibold">
-                                    <button onclick="openFormPerizinan()"
-                                        class="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700">Berkas</button>
-                                </td>
-                                <td class="px-4 py-3 border text-center">
-                                    <button
-                                        class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">Perizinan</button>
-                                </td>
-                                <td class="px-4 py-3 border">Sedang Diproses</td>
-                            </tr>
+                                        <td class="px-4 py-3 border">{{ $p->status ?? '—' }}</td>
+                                        <td class="px-4 py-3 border">
+                                            @if ($p->status_proses === "ptsp")
+                                                Admin PTSP
+                                            @elseif ($p->status_proses === "dinkes")
+                                                Dinkes
+                                            @elseif ($p->status_proses === "kepala")
+                                                Kepala PTSP
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="px-4 py-6 border text-center" colspan="7">
+                                        Belum ada data perpanjangan.
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
 
 
-                <!-- Tabel kedua -->
+                <!-- PERMOHONAN -->
                 <h2 class="text-2xl font-bold text-gray-800 mb-1 text-center">Permohonan Izin</h2>
-                <p class="text-gray-600 mb-6 text-center">Semua pengajuan permohonan dapat dipantau dan dikelola.</p>
+                <p class="text-gray-600 mb-6 text-center">
+                    Semua pengajuan permohonan dapat dipantau dan dikelola.
+                </p>
 
                 <div class="overflow-x-auto bg-white shadow rounded-lg border">
                     <table class="min-w-full text-sm text-center">
@@ -183,86 +178,59 @@
                                 <th class="px-4 py-3 border">Jenis Izin</th>
                                 <th class="px-4 py-3 border">Tanggal Pengajuan</th>
                                 <th class="px-4 py-3 border">Proses Berkas</th>
-                                <th class="px-4 py-3 border">File</th>
                                 <th class="px-4 py-3 border">Status</th>
+                                <th class="px-4 py-3 border">Proses Pengajuan</th>
                             </tr>
                         </thead>
+
                         <tbody>
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 border">1</td>
-                                <td class="px-4 py-3 border">Dimas Satyo</td>
-                                <td class="px-4 py-3 border">Medical License</td>
-                                <td class="px-4 py-3 border">12 Jan 2025</td>
-                                <td class="px-4 py-3 border text-blue-600 font-semibold">
-                                    <button onclick="openFormPerizinan()"
-                                        class="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700">Berkas</button>
-                                </td>
-                                <td class="px-4 py-3 border text-center">
-                                    <button
-                                        class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">Perizinan</button>
-                                </td>
-                                <td class="px-4 py-3 border">Sedang Diproses</td>
-                            </tr>
+                            @if (isset($permohonan) && $permohonan->count())
+                                @foreach ($permohonan as $p)
+                                    <tr class="hover:bg-gray-50">
+                                        <td class="px-4 py-3 border">{{ $loop->iteration }}</td>
+                                        <td class="px-4 py-3 border">{{ $p->nama }}</td>
+                                        {{-- Di controller: jenis_izin = "Klinik" / "Apotik" --}}
+                                        <td class="px-4 py-3 border">{{ $p->jenis_izin ?? '-' }}</td>
+                                        <td class="px-4 py-3 border">
+                                            {{ isset($p->created_at) ? \Carbon\Carbon::parse($p->created_at)->format('d M Y') : '-' }}
+                                        </td>
 
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 border">2</td>
-                                <td class="px-4 py-3 border">Alya Putri</td>
-                                <td class="px-4 py-3 border">Medical License</td>
-                                <td class="px-4 py-3 border">14 Jan 2025</td>
-                                <td class="px-4 py-3 border text-green-600 font-semibold">
-                                    <button onclick="openFormPerizinan()"
-                                        class="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700">Berkas</button>
-                                </td>
-                                <td class="px-4 py-3 border text-center">
-                                    <button
-                                        class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">Perizinan</button>
-                                </td>
-                                <td class="px-4 py-3 border">Sedang Diproses</td>
-                            </tr>
+                                        {{-- Proses Berkas: buka modal + set selectedID --}}
+                                        <td class="px-4 py-3 border text-blue-600 font-semibold">
+                                            <button data-id="{{ $p->id }}" data-jenis="{{ $p->jenis_izin }}" data-status_proses="{{ $p->status_proses }}"
+                                                onclick="openFormPerizinan(this.dataset.id, this.dataset.jenis, this.dataset.status_proses)"
+                                                class="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700">
+                                                Berkas
+                                            </button>
+                                        </td>
 
-                            <tr class="hover:bg-gray-50">
-                                <td class="px-4 py-3 border">3</td>
-                                <td class="px-4 py-3 border">Alya Putri</td>
-                                <td class="px-4 py-3 border">Medical License</td>
-                                <td class="px-4 py-3 border">14 Jan 2025</td>
-                                <td class="px-4 py-3 border text-green-600 font-semibold"><button
-                                        onclick="openFormPerizinan()"
-                                        class="bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-700">Berkas</button>
-                                </td>
-                                <td class="px-4 py-3 border text-center">
-                                    <button
-                                        class="bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700">Perizinan</button>
-                                </td>
-                                <td class="px-4 py-3 border">Sedang Diproses</td>
-                            </tr>
+                                        {{-- File (nanti bisa diarahkan ke berkas upload lain) --}}
 
+                                        <td class="px-4 py-3 border">{{ $p->status ?? '—' }}</td>
+                                        <td class="px-4 py-3 border">
+                                            @if ($p->status_proses === "ptsp")
+                                                Admin PTSP
+                                            @elseif ($p->status_proses === "dinkes")
+                                                Dinkes
+                                            @elseif ($p->status_proses === "kepala")
+                                                Kepala PTSP
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="px-4 py-6 border text-center" colspan="7">
+                                        Belum ada data permohonan.
+                                    </td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            <!-- Pop Up Rekomendasi -->
-            <!-- <div id="myModal" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
-                <div class="w-full max-w-xs rounded-xl shadow-2xl text-center p-5" style="background-color:#F5F5F5;">
-
-                    <div class="mb-4">
-                        <h2 class="font-bold text-lg text-black mt-0">Surat Rekomendasi</h2>
-                    </div>
-
-                    <form enctype="multipart/form-data">
-                        <div class="mb-3">
-                            <p class="text-black mb-1 text-left text-sm">Surat Rekomendasi</p>
-                            <input type="text" placeholder="surat rekomendasi"
-                                class="w-full px-3 py-2 rounded-md text-sm bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-300 border border-gray-300">
-                        </div>
-
-                        <button type="button"
-                            class="w-full py-2 bg-orange-400 text-black mb-2 rounded-md hover:bg-orange-500 transition duration-200 text-sm">
-                            Ajukan Rekomendasi
-                        </button>
-                    </form>
-                </div>
-            </div> -->
 
             <div id="myForm" class="fixed inset-0 bg-black/60 hidden z-50 flex items-center justify-center p-4">
                 <div class="bg-white rounded-lg shadow-md p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
@@ -270,371 +238,342 @@
                     <button onclick="closeFormPerizinan()"
                         class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-xl font-bold">✕</button>
 
-                    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">FORM PERMOHONAN</h1>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">BERKAS </h1>
 
-                    <form>
+                    <div>
                         <div class="space-y-6">
-                            <!-- DATA UMUM UNTUK SEMUA PROFESI INDIVIDU -->
-                            <div class="border-b pb-4">
-                                <h2 class="text-xl font-bold text-gray-700 mb-4">Dokumen Umum Profesi Kesehatan</h2>
-
-                                <!-- Surat Permohonan Izin -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Permohonan Izin Bermaterai
-                                        Rp. 10.000,-</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- KTP -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">KTP</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- STR -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">STR (Surat Tanda
-                                        Registrasi)</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- Ijazah -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Ijazah</label>
-                                    <textarea rows="3" readonly
-                                        class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"></textarea>
-                                </div>
-
-                                <!-- Surat Keterangan Berbadan Sehat -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Keterangan Berbadan
-                                        Sehat</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- Pas Foto -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Pas Foto Berwarna 3 x 4</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- NPWP -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">NPWP</label>
-                                    <textarea rows="2" readonly
-                                        class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"></textarea>
-                                </div>
-
-                                <!-- BPJS Ketenagakerjaan -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">BPJS Ketenagakerjaan</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- BPJS Kesehatan -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">BPJS Kesehatan</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- Foto Tempat Praktik -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Foto Tempat Praktik</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- Surat Rekomendasi Puskesmas -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Rekomendasi Puskesmas
-                                        Wilayah Setempat</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- Surat Rekomendasi Dinas Kesehatan -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Rekomendasi Dinas
-                                        Kesehatan</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- DATA KHUSUS DOKTER -->
-                            <div class="border-b pb-4">
-                                <h2 class="text-xl font-bold text-gray-700 mb-4">Dokumen Khusus Dokter</h2>
-
-                                <!-- Surat Rekomendasi Organisasi Profesi Dokter -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Rekomendasi dari
-                                        Organisasi Profesi (IDI/Himpunan Profesi Spesialis)</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- DATA KHUSUS APOTEKER -->
-                            <div class="border-b pb-4">
-                                <h2 class="text-xl font-bold text-gray-700 mb-4">Dokumen Khusus Apoteker</h2>
-
-                                <!-- Surat Rekomendasi Organisasi Profesi Apoteker -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Rekomendasi dari
-                                        Organisasi Profesi Apoteker</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- DATA APOTIK -->
-                            <div class="border-b pb-4">
+                            <div class="hidden" id="form-apotik">
                                 <h2 class="text-xl font-bold text-gray-700 mb-4">Dokumen Apotik</h2>
-
-                                <!-- KTP Pemilik Usaha -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">KTP Pemilik Usaha</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
+                                @foreach ($berkasApotik as $item)    
+                                    <div class="apotik-item" data-id="{{ $item->id_healthygate }}">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Surat Permohonan</span>
+                                                <a href="{{ asset('storage/' . $item->surat_permohonan) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>KTP Pemilik</span>
+                                                <a href="{{ asset('storage/' . $item->ktp_pemilik) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>NPWP Pemilik</span>
+                                                <a href="{{ asset('storage/' . $item->npwp_pemilik) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>NIB</span>
+                                                <a href="{{ asset('storage/' . $item->nib) }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Surat Izin Praktik Apotik dan KTP Penanggung Jawab Apotik</span>
+                                                <a href="{{ asset('storage/' . $item->sip_apt_jawab) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Denah Lokasi</span>
+                                                <a href="{{ asset('storage/' . $item->denah_lokasi) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Denah Ruangan</span>
+                                                <a href="{{ asset('storage/' . $item->denah_ruangan) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Surat Izin Praktik Apotik dan KTP Asistek Apoteker</span>
+                                                <a href="{{ asset('storage/' . $item->sip_asisten_apoteker) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Daftar Peralatan Apotik</span>
+                                                <a href="{{ asset('storage/' . $item->daftar_peralatan_apotik) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Surat Rekomendasi Puskesmas Wilayah Setempat</span>
+                                                <a href="{{ asset('storage/' . $item->rekom_puskesmas) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>IMB/PBG</span>
+                                                <a href="{{ asset('storage/' . $item->imb_pbg) }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Tanda Lunas PBB tahun berjalan</span>
+                                                <a href="{{ asset('storage/' . $item->pbb_tahun) }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Dokumen Lingkungan/SPPL</span>
+                                                <a href="{{ asset('storage/' . $item->sppl) }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>BPJS Ketenagakerjaan Apoteker</span>
+                                                <a href="{{ asset('storage/' . $item->bpjs_apoteker) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>BPJS Ketenagakerjaan Asisten Apoteker</span>
+                                                <a href="{{ asset('storage/' . $item->bpjs_asisten) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>BPJS Kesehatan Asisten Apoteker</span>
+                                                <a href="{{ asset('storage/' . $item->bpjs_kesehatan_asisten) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Pas Foto</span>
+                                                <a href="{{ asset('storage/' . $item->pas_foto) }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- NPWP Pemilik Usaha -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">NPWP Pemilik Usaha</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- NIB -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Nomor Induk Berusaha
-                                        (NIB)</label>
-                                    <textarea rows="2" readonly
-                                        class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"></textarea>
-                                </div>
-
-                                <!-- SIP Apoteker + KTP Penanggung Jawab -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Izin Praktik Apotik dan
-                                        KTP Penanggung Jawab Apotik</label>
-                                    <textarea rows="2" readonly
-                                        class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 bg-gray-50"></textarea>
-                                </div>
-
-                                <!-- Denah Lokasi Bangunan -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Denah Lokasi Bangunan</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- Denah Ruangan -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Denah Ruangan</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- SIP + KTP Asisten Apoteker -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Izin Praktik Apotik dan
-                                        KTP Asisten Apoteker</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- Daftar Peralatan Apotik -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Daftar Nama Peralatan
-                                        Apotik</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- BPJS Ketenagakerjaan Apoteker -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">BPJS Ketenagakerjaan
-                                        Apoteker</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- BPJS Ketenagakerjaan Asisten Apoteker -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">BPJS Ketenagakerjaan Asisten
-                                        Apoteker</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- BPJS Kesehatan Asisten Apoteker -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">BPJS Kesehatan Asisten
-                                        Apoteker</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- Pas Foto 4x6 -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Pas Foto Berwarna 4 x 6</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- IMG/PBG -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">IMG / PBG (Izin Mendirikan
-                                        Bangunan)</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- PBB -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Tanda Lunas PBB Tahun
-                                        Berjalan</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- SPPL -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Dokumen Lingkungan SPPL</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
 
                             <!-- DATA KLINIK -->
-                            <div class="pb-4">
+                            <div class="hidden" id="form-klinik">
                                 <h2 class="text-xl font-bold text-gray-700 mb-4">Dokumen Klinik</h2>
+                                @foreach ($berkasKlinik as $item)
+                                    <div class="klinik-item" data-id="{{ $item->id_healthygate }}">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                {{-- Nama file --}}
+                                                <span>Surat Permohonan Izin Bermaterai Rp. 10.000,-</span>
+                                                {{-- Link Baca / Lihat PDF --}}
+                                                <a href="{{ asset('storage/' . $item->surat_permohonan) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
 
-                                <!-- NPWP Pemilik Klinik -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">NPWP Pemilik Klinik</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Ktp Pemilik -->
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>KTP Pemilik Klinik</span>
+                                                <a href="{{ asset('storage/' . $item->ktp_pemilik) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
 
-                                <!-- BPJS Kesehatan Pemilik Klinik -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">BPJS Kesehatan Pemilik
-                                        Klinik</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>NPWP Pemilik Klinik</span>
+                                                <a href="{{ asset('storage/' . $item->npwp_pemilik) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
 
-                                <!-- Daftar Obat-Obatan -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Daftar Obat-Obatan</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>NIB Pemilik Klinik</span>
+                                                <a href="{{ asset('storage/' . $item->nib) }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>BPJS Pemilik Klinik</span>
+                                                <a href="{{ asset('storage/' . $item->bpjs_pemilik) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Daftar Obat</span>
+                                                <a href="{{ asset('storage/' . $item->daftar_obat) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Surat Izin Tenaga Kesehatan</span>
+                                                <a href="{{ asset('storage/' . $item->surat_izin_tenaga_kesehatan) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Surat Perjanjian Limbah B3 (Bahan, Berbahaya, dan Beracun)</span>
+                                                <a href="{{ asset('storage/' . $item->perjanjian_limbah_b3) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Deskripsi Pengorganisasian</span>
+                                                <a href="{{ asset('storage/' . $item->deskripsi_pengorganisasian) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Gambar Lokasi Bangunan</span>
+                                                <a href="{{ asset('storage/' . $item->lokasi_bangunan) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Prasarana Ketenagaan</span>
+                                                <a href="{{ asset('storage/' . $item->prasarana_ketenagaan) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Peralatan Kesehatan</span>
+                                                <a href="{{ asset('storage/' . $item->peralatan_kesehatan) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Kefarmasian</span>
+                                                <a href="{{ asset('storage/' . $item->kefarmasian) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>laboratorium</span>
+                                                <a href="{{ asset('storage/' . $item->laboratorium) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                @endforeach
+                            </div>
 
-                                <!-- Deskripsi Pengorganisasian -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Deskripsi Pengorganisasian,
-                                        Lokasi, Bangunan, Prasarana, Ketenagaan, Peralatan Kesehatan, Kefarmasian,
-                                        Laboratorium</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
+                            <!-- DATA Perpanjangan -->
+                            <div class="hidden" id="form-perpanjangan">
+                                @foreach ($perpanjangan as $item)
+                                    <div class="perpanjangan-item" data-id="{{ $item->id_healthygate }}">
+                                        <div class="mb-4">
+                                            <div class="flex justify-between gap-16 p-4 border rounded-lg bg-gray-50">
+                                                <span>Dokumen Perpanjangan Izin Usaha</span>
+                                                <a href="{{ asset('storage/' . $item->izin_usaha_terbit) }}" target="_blank"
+                                                    class="text-blue-600 hover:text-blue-800">
+                                                    Baca
+                                                </a>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-
-                                <!-- Perjanjian Limbah B3 -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Perjanjian Kerja Sama Pembuangan
-                                        Limbah B3</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
-
-                                <!-- SIP Semua Tenaga Kesehatan -->
-                                <div class="mb-4">
-                                    <label class="block text-gray-700 font-medium mb-2">Surat Izin Praktik Semua Tenaga
-                                        Kesehatan Klinik</label>
-                                    <div class="flex justify-between p-4 border rounded-lg bg-gray-50">
-                                        <span>Download File...</span>
-                                        <button type="button" class="text-blue-600 hover:text-blue-800">Unduh</button>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
 
                         <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-end pt-6 border-t mt-6">
-                            <button type="button" onclick="openBatalkan()"
-                                class="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700">Tolak</button>
-                            <button type="button"
-                                class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700">Setujui</button>
+                            <!-- Tombol Tolak -->
+                            <button type="button" onclick="openBatalkan(selectedID)"
+                                class="px-8 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700">
+                                Tolak
+                            </button>
+
+                            <!-- FORM SETUJUI HEALTHYGATE -->
+                            <form id="formSetujui" method="POST">
+                                @csrf
+                                <button id="btnSetujui" type="submit" class="px-8 py-3 rounded-lg text-white bg-gray-400 cursor-not-allowed"
+                                    disabled>
+                                    Setujui
+                                </button>
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
 
@@ -672,15 +611,25 @@
 
                     <!-- BUTTON BAWAH -->
                     <div class="flex gap-3 pt-2 justify-center">
+                    
+                        <!-- Batal -->
                         <button onclick="closeBatalkan()"
-                            class="flex-1 px-4 py-3 bg-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-400">
+                            class="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700">
                             Batal
                         </button>
-
-                        <button type="submit"
-                            class="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700">
-                            Kirim
-                        </button>
+                    
+                        <!-- Form Submit -->
+                        <form id="formTolak" method="POST" class="contents">
+                            @csrf
+                    
+                            <!-- Hidden input untuk mengirim keterangan -->
+                            <input type="hidden" name="keterangan" id="inputKeterangan">
+                    
+                            <button type="submit"
+                                class="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700">
+                                Kirim
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -704,7 +653,12 @@
 </body>
 
 <script>
-    // Untuk Surat Rekomendasi
+    let selectedID = null;
+    let selectedJenis = null;
+
+    // =========================
+    // Modal Surat Rekomendasi
+    // =========================
     function openModal() {
         document.getElementById("myModal").classList.remove("hidden");
     }
@@ -713,35 +667,151 @@
         document.getElementById("myModal").classList.add("hidden");
     }
 
-    // Untuk Tabel Permohonan
-    function openFormPermohonanan() {
-        document.getElementById("myForm").classList.remove("hidden");
-    }
+    // =========================
+    // Modal Form Berkas (Permohonan & Perpanjangan)
+    // =========================
 
-    // Untuk Tabel Perizinan
-    function openFormPerizinan() {
+    function openFormPerizinan(id, jenis, status_proses) {
+        selectedID = id;
+        selectedJenis = jenis;
+
         document.getElementById("myForm").classList.remove("hidden");
+        document.getElementById("form-klinik").classList.add("hidden");
+        document.getElementById("form-apotik").classList.add("hidden");
+        document.getElementById("form-perpanjangan").classList.add("hidden");
+        
+        if (selectedJenis === "Klinik") {
+            const items = document.querySelectorAll('.klinik-item');
+
+            items.forEach(item => {
+                if (item.dataset.id === id) {
+                    item.classList.remove('hidden');  // tampilkan
+                } else {
+                    item.classList.add('hidden');     // sembunyikan
+                }
+            });
+
+            document.getElementById("form-klinik").classList.remove("hidden");
+        } else if (selectedJenis === "Apotik") {
+            const items = document.querySelectorAll('.apotik-item');
+            
+            items.forEach(item => {
+                if (item.dataset.id === id) {
+                    item.classList.remove('hidden');  // tampilkan
+                } else {
+                    item.classList.add('hidden');     // sembunyikan
+                }
+            });
+
+            document.getElementById("form-apotik").classList.remove("hidden");
+        } else if (selectedJenis === "Perpanjangan"){
+            const items = document.querySelectorAll('.perpanjangan-item');
+
+            items.forEach(item => {
+                if (item.dataset.id === id) {
+                    item.classList.remove('hidden');  // tampilkan
+                } else {
+                    item.classList.add('hidden');     // sembunyikan
+                }
+            });
+
+            document.getElementById("form-perpanjangan").classList.remove("hidden");
+        }
+
+        const btn = document.getElementById("btnSetujui");
+        if (status_proses === "ptsp") {
+            btn.disabled = false;
+            btn.classList.remove("bg-gray-400", "cursor-not-allowed");
+            btn.classList.add("bg-green-600", "hover:bg-green-700");
+        } else {
+            btn.disabled = true;
+            btn.classList.add("bg-gray-400", "cursor-not-allowed");
+            btn.classList.remove("bg-green-600", "hover:bg-green-700");
+        }
     }
 
     function closeFormPerizinan() {
         document.getElementById("myForm").classList.add("hidden");
     }
 
-    // Untuk Tolak Berkas
-    function openBatalkan() {
+    // =========================
+    // Popup Tolak Berkas
+    // =========================
+    function openBatalkan(id) {
+        selectedID = id;
         document.getElementById("modalWarning").classList.remove("hidden");
     }
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const formTolak = document.getElementById("formTolak");
+        const inputKeterangan = document.getElementById("inputKeterangan");
+
+        formTolak.addEventListener("submit", function (e) {
+            if (!selectedID) {
+                e.preventDefault();
+                alert("Silakan pilih berkas terlebih dahulu dari tabel.");
+                return;
+            }
+
+            const selectedStatus = document.querySelector('input[name="status"]:checked');
+
+            if (!selectedStatus) {
+                e.preventDefault();
+                alert("Silakan pilih alasan penolakan.");
+                return;
+            }
+
+            if (selectedStatus.value === "berkas-tidak-lengkap") {
+                inputKeterangan.value = "Berkas tidak lengkap";
+            } else {
+                const lainnyaText = document.getElementById("inputLainnya").value.trim();
+                if (lainnyaText === "") {
+                    e.preventDefault();
+                    alert("Silakan isi keterangan lainnya.");
+                    return;
+                }
+                inputKeterangan.value = lainnyaText;
+            }
+
+            this.action = "/ptsp/healthygate/tolak/" + selectedID;
+        });
+    });
 
     function closeBatalkan() {
         document.getElementById("modalWarning").classList.add("hidden");
     }
-</script>
 
-<script>
+    // =========================
+    // Setujui → kirim ke PTSP Healthygate
+    // =========================
+    document.addEventListener('DOMContentLoaded', function() {
+        const formSetujui = document.getElementById("formSetujui");
+
+        if (formSetujui) {
+            formSetujui.addEventListener("submit", function(e) {
+                if (!selectedID) {
+                    e.preventDefault();
+                    alert("Silakan pilih berkas terlebih dahulu dari tabel.");
+                    return;
+                }
+
+                // Route Healthygate PTSP
+                this.action = "/ptsp/healthygate/setujui/" + selectedID;
+            });
+        }
+    });
+
+    // =========================
+    // Dropdown (kalau dipakai)
+    // =========================
     function toggleDropdown() {
         const menu = document.getElementById('dropdownMenu');
-        menu.classList.toggle('hidden');
+        if (menu) {
+            menu.classList.toggle('hidden');
+        }
     }
 </script>
+
 
 </html>

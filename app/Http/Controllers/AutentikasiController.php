@@ -86,7 +86,7 @@ class AutentikasiController extends Controller
                 'medlicense'  => 'userMedlicense',
             ],
             'admin_ptsp' => [
-                'healthygate' => 'admin-ptspHealthygate',
+                'healthygate' => 'admin-ptsphealthygate',
                 'medlicense'  => 'admin-ptspMedlicense',
             ],
             'kepala_ptsp' => [
